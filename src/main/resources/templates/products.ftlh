@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BUYSELL</title>
+    <title>LAURENTINO</title>
 </head>
 <body>
-<h1>BUYSELL</h1><hr>
+<h1>LAURENTINO</h1><hr>
 <h4>Товары со всего Казахстана</h4>
 <#list products as product>
     <div>
-        <p><b>${product.title}</b> ${product.price} руб. | <a href="/product/${product.id}">Подробнее...</a></p>
+        <p><b>${product.title}</b> ${product.price} тенге. | <a href="/product/${product.id}">Подробнее...</a></p>
     </div>
 </#list>
 <hr>
