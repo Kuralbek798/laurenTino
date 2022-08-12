@@ -1,16 +1,19 @@
 package com.example.laurentino.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+import org.hibernate.Hibernate;
+ import org.springframework.context.ApplicationContext;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "images")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@PersistenceContext
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,4 +33,17 @@ public class Image {
     private byte[] bytes;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Product product;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Image image = (Image) o;
+        return id != null && Objects.equals(id, image.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,7 +1,8 @@
 package com.example.laurentino.models;
 
 import com.example.laurentino.models.enums.Role;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,42 +10,40 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-
 @Entity
 @Table(name = "users")
 @Data
 public class User implements UserDetails {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "phoneNumber", unique = true)
-    private String phoneNumber;
+    @Column(name = "numberPhone", unique = true)
+    private String numberPhone;
     @Column(name = "name")
     private String name;
     @Column(name = "active")
     private boolean active;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
-    @Column(name = "image_id")
     private Image avatar;
-    @Column(name = "password",length = 1000)
+    @Column(name = "password", length = 1000)
     private String password;
-@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-@CollectionTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"))
-@Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
     private LocalDateTime dateOfCreated;
+
     @PrePersist
-    public void init(){
+    private void init() {
         dateOfCreated = LocalDateTime.now();
     }
-
-    // security
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
